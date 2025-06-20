@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Service";
+}
+
+
+
+<div class="bg-light">
+    <div class="mx-auto" style="max-width: 600px;">
+        <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            Select a service...
+        </div>
+        <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+            Lorum ipsum dolor sit amet consectetur adipiscing elit semper dalar
+        </div>
+        <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+            elementum tempus hac tellus libero accumsan
+        </div>
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-sm-4 ">
+            <a href="@Url.Action("Booking", "Home", new { service = "ALS(Advanced Life Support)", sos = false })" class="text-decoration-none text-dark"   >
+                <div class="card">
+                    <div class="card-body">
+                        <img src="https://via.placeholder.com/150x96?text= " alt="Placeholder" class="card-img-top" style="background:#fafafd; border-radius:8px; padding:16px; object-fit:contain; height:96px;" />
+
+                        <h4 class="card-title text-center">ALS (Advanced Life Support)</h4>
+                        <p class="card-text ">ALS ambulance is staffed by a Paramedic and is used to transport patients who require high level of care</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4 ">
+            <a href="@Url.Action("Booking", "Home", new { service = "BLS(Basic Life Support)", sos = false })" class="text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">BLS (Basic Life Support)</h4>
+                        <p class="card-text">BLS ambulance is provides transport to patients who are in a non life threatening condition</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4 ">
+            <a href="@Url.Action("Booking", "Home", new { service = "Patient Transport", sos = false })" class="text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Patient Transport</h4>
+                        <p class="card-text">The most basic type of transport for patients requiring ambulatory support to and from the hospital</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="@Url.Action("Booking", "Home", new { service = "Medical Utility Vehicle", sos = false })" class="text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Medical Utility Vehicle</h4>
+                        <p class="card-text">A state-of-the-art small of large van that is designed to facilitate the movement and transport of patients</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("Booking", "Home", new { service = "Event Medical Ambulance", sos = false })" class="text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Event Medical Ambulance</h4>
+                        <p class="card-text">Ambulances that are stationed at events, such as concerts sports games, and festivals, to provide medical assistance</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("Booking", "Home", new { service = "Air Ambulance", sos = false })" class="text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Air ambulance</h4>
+                        <p class="card-text">Air ambulance help in the transport of patients across long distances in both emergency and non-emergency situations</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

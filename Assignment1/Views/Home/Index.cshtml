@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row bg-white">
+    <div class="col-sm-8 ">
+        <div class="mx-auto" style="max-width: 600px;">
+            <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+                A real O.K. team here to
+            </div>
+            <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+                try and save you
+            </div>
+            <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+                If you're still breathing once you've reached the hospital we've done
+            </div>
+            <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+                our job successfully!
+            </div>
+            <br />
+            <div class="text-center">
+                <a href="@Url.Action("Service", "Home")" class="btn btn-primary">BOOK AMBULANCE</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <img src="~/Images/Ambulance.png" alt="Ambulance" class="img-fluid" style="box-shadow:0 0 8px #ccc; width:100%; height:auto;" />
+    </div>
+
+</div>
+<div class="row bg-light">
+    <div class="col-sm-8 d-flex align-items-center">
+        <div class="mx-auto" style="max-width: 600px;">
+            <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+                EMERGENCY?
+            </div>
+            <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+                Only hit the button for real emergencies mind you...
+            </div>
+            <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
+                Stepping on a thumbtack at 3 am while doing arts and crafts is not an emergency
+            </div>
+            @*<div class="d-flex align-items-center">
+                    <span style="font-size:1rem; color:#888; font-family:sans-serif;">Only hit the button for real emergencies mind you...</span>
+                    <span style="font-size:1rem; color:#888; font-family:sans-serif;">Stepping on a thumbtack at 3 am while doing arts and crafts is not an emergency</span>
+                </div>*@
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <a href="javascript:void(0);" id="sosLink">
+            <img id="sosImage" src="~/Images/SOS.png" alt="SOS" class="img-fluid" style="box-shadow:0 0 8px #ccc; width:100%; height:auto;" />
+        </a>
+    </div>
+</div>
+
+<script>
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    function getRandomFromArray(arr) {
+        return arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
+    }
+    function generateRandomBooking() {
+        var vehicles = JSON.parse(localStorage.getItem('vehicles') || '[]');
+        var drivers = JSON.parse(localStorage.getItem('drivers') || '[]');
+        var reasons = ["Medical Emergency"];
+        var addresses = [""];
+        var vehicle = getRandomFromArray(vehicles);
+        var driver = getRandomFromArray(drivers);
+        var driverName = ((driver.FirstName)+" "+(driver.LastName));
+
+        return {
+            bookingId: generateUUID(),
+            service: vehicle ? (vehicle.Service || vehicle.service || '') : 'Emergency',
+            name: "",
+            phone: driver ? (driver.PhoneNumber || driver.phoneNumber || '') : '+27 000000000',
+            time: (function () {
+                var now = new Date();
+                var hour = String(now.getHours()).padStart(2, '0');
+                var min = String(now.getMinutes()).padStart(2, '0');
+                return hour + ":" + min;
+            })(),
+            reason: getRandomFromArray(reasons),
+            vehicle: vehicle ? (vehicle.Type || vehicle.type || '') : 'Unknown',
+            driver: driverName,
+            address: getRandomFromArray(addresses),
+            bookingDate: new Date().toISOString(),
+            sos: true
+        };
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var sosLink = document.getElementById('sosLink');
+        if (sosLink) {
+            sosLink.addEventListener('click', function () {
+                var booking = generateRandomBooking();
+                var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings.push(booking);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                localStorage.setItem('selectedBookingId', booking.bookingId);
+                window.location.href = '/Home/Confirmed';
+            });
+        }
+    });
+
+</script>

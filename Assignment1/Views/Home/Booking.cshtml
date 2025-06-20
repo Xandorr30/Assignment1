@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewBag.Title = "Booking";
+}
+<script type="text/javascript">
+    var vehicles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Vehicles ?? new List<Assignment1.Models.Vehicle>()));
+    var drivers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Drivers ?? new List<Assignment1.Models.Driver>()));
+</script>
+<div class="bg-light">
+    <div class="mx-auto" style="max-width: 600px;">
+        <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            
+            @ViewBag.ServiceName
+            @*if service is clicked then corrosponding name should be displayed*@
+        </div>
+    </div>
+    <br />
+    <form id="booking">
+        <input type="hidden" id="serviceName" value="@ViewBag.ServiceName" />
+        @*<input type="hidden" id="sosValue" value="@ViewBag.Sos" />*@
+
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width:700px">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <label for="name" class="form-label"><b>Full Name*</b></label>
+                            <input type="text" class="form-control" id="clientname" name="name" placeholder="John Carter" required />
+                        </div>
+                        <div class="col">
+                            <label for="phone" class="form-label"><b>Phone*</b></label>
+                            <input type="text" class="form-control" id="clientphone" name="phone" placeholder="+27 00 000 0000" required />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <label for="time" class="form-label"><b>Pick-Up Time*</b></label>
+                            <input type="time" class="form-control" id="time" name="time" required />
+                        </div>
+                        <div class="col">
+                            <label for="reason" class="form-label"><b>Reason*</b></label>
+                            <select class="form-control" id="reason" required>
+                                <option value="Accident">Accident</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Medical Emergency">Medical Emergency</option>
+                                <option value="Routine Checkup">Routine Checkup</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <label for="vehicle" class="form-label"><b>Vehicle*</b></label>
+                            <select id="vehicleDropdown" name="vehicle" class="form-select" required>
+                                <option value="">Select vehicle</option>
+                                @foreach (var v in (IEnumerable<Assignment1.Models.Vehicle>)ViewBag.Vehicles)
+                                {
+                                    if (v.Service == (string)ViewBag.ServiceName)
+                                    {
+                                        <option value="@v.Type">@v.Type</option>
+                                    }
+                                }
+                            </select>
+                            @*<input type="text" class="form-control" id="vehicle" name="vehicle" placeholder="Type 1" required />*@
+                        </div>
+                        <div class="col">
+                            <label for="driver" class="form-label"><b>Driver*</b></label>
+                            <select id="driverDropdown" name="driver" class="form-select" required>
+                                <option value="">Select driver</option>
+                                @foreach (var d in (IEnumerable<Assignment1.Models.Driver>)ViewBag.Drivers)
+                                {
+                                    if (d.Service == (string)ViewBag.ServiceName)
+                                    {
+                                        <option value="@d.FirstName @d.LastName">@d.FirstName @d.LastName</option>
+                                    }
+                                }
+                            </select>
+                            @*<input type="text" class="form-control" id="driver" name="driver" placeholder="John Carter" required />*@
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class=" col ">
+                            <label for="address" class="form-label"><b>Pick_Up Address</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Please type your address here..." />
+                    </div>
+                    <br />
+                    <div class="row">
+                        <input type="submit" name="book" value="BOOK AMBULANCE" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function generateUUID() {
+            // RFC4122 version 4 compliant UUID
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('booking');
+            if (!form) return;
+
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+
+                // Get the service name from the hidden field
+                var serviceName = document.getElementById('serviceName').value;
+
+                // Collect values
+                var bookingData = {
+                    bookingId: generateUUID(),
+                    service: serviceName,
+                    name: document.getElementById('clientname').value,
+                    phone: document.getElementById('clientphone').value,
+                    time: document.getElementById('time').value,
+                    reason: document.getElementById('reason').value,
+                    vehicle: document.getElementById('vehicleDropdown').value,
+                    driver: document.getElementById('driverDropdown').value,
+                    address: document.getElementById('address').value,
+                    bookingDate: new Date().toISOString(),
+                    sos: false
+                };
+
+
+                // Save to localStorage (as an array of bookings)
+                var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings.push(bookingData);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                localStorage.setItem('selectedBookingId', bookingData.bookingId);
+
+
+                // Redirect to Confirmed view
+                window.location.href = '/Home/Confirmed';
+            });
+        });
+
+        //function getRandomFromArray(arr) {
+        //    return arr[Math.floor(Math.random() * arr.length)];
+        //}
+
+        //function fillRandomBookingValues() {
+        //    // Random driver
+        //    var driver = getRandomFromArray(drivers.filter(function (d) {
+        //        return (d.Service || d.service) === document.getElementById('serviceName').value;
+        //    }));
+        //    if (driver) {
+        //        document.getElementById('driverDropdown').value = driver.FirstName + ' ' + driver.LastName;
+        //        document.getElementById('clientname').value = driver.FirstName + ' ' + driver.LastName;
+        //        document.getElementById('clientphone').value = driver.PhoneNumber || driver.phoneNumber || '';
+        //    }
+
+        //    // Random vehicle
+        //    var vehicle = getRandomFromArray(vehicles.filter(function (v) {
+        //        return (v.Service || v.service) === document.getElementById('serviceName').value;
+        //    }));
+        //    if (vehicle) {
+        //        document.getElementById('vehicleDropdown').value = vehicle.Type || vehicle.type || '';
+        //    }
+
+        //    // Random time
+        //    var hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+        //    var min = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+        //    document.getElementById('time').value = hour + ":" + min;
+
+        //    // Random reason
+        //    var reasons = ["Accident", "Transport", "Medical Emergency", "Routine Checkup", "Other"];
+        //    document.getElementById('reason').value = getRandomFromArray(reasons);
+
+        //    // Random address
+        //    var addresses = [
+        //        "123 Main St, City",
+        //        "456 Oak Ave, Suburb",
+        //        "789 Pine Rd, Town",
+        //        "101 Maple Dr, Village"
+        //    ];
+        //    document.getElementById('address').value = getRandomFromArray(addresses);
+        //}
+
+        //generate random values
+        //function getRandomName() {
+        //    const names = ["John Carter", "Jane Smith", "Alex Lee", "Sam Patel", "Chris Brown"];
+        //    return names[Math.floor(Math.random() * names.length)];
+        //}
+        //function getRandomPhone() {
+        //    return "+27 " + Math.floor(100000000 + Math.random() * 900000000);
+        //}
+        //function getRandomTime() {
+        //    const hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+        //    const min = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+        //    return hour + ":" + min;
+        //}
+        //function getRandomReason() {
+        //    const reasons = ["Accident", "Transport", "Medical Emergency", "Routine Checkup", "Other"];
+        //    return reasons[Math.floor(Math.random() * reasons.length)];
+        //}
+        //function getRandomOption(selectId) {
+        //    var select = document.getElementById(selectId);
+        //    if (!select) return "";
+        //    var options = Array.from(select.options).filter(o => o.value);
+        //    if (options.length === 0) return "";
+        //    return options[Math.floor(Math.random() * options.length)].value;
+        //}
+        //function getRandomAddress() {
+        //    const addresses = [
+        //        "123 Main St, City",
+        //        "456 Oak Ave, Suburb",
+        //        "789 Pine Rd, Town",
+        //        "101 Maple Dr, Village"
+        //    ];
+        //    return addresses[Math.floor(Math.random() * addresses.length)];
+        //}
+
+        //function fillRandomBookingValues() {
+        //    document.getElementById('clientname').value = getRandomName();
+        //    document.getElementById('clientphone').value = getRandomPhone();
+        //    document.getElementById('time').value = getRandomTime();
+        //    document.getElementById('reason').value = getRandomReason();
+        //    document.getElementById('vehicleDropdown').value = getRandomOption('vehicleDropdown');
+        //    document.getElementById('driverDropdown').value = getRandomOption('driverDropdown');
+        //    document.getElementById('address').value = getRandomAddress();
+        //}
+
+    </script>
+
+
+    @*<div class="row">
+        <div class="col-sm-6">
+            <form method="post" action="@Url.Action("Book", "Home")">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required />
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required />
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <img src="@Url.Content("~/Images/Booking.png")" alt="Booking Image" class="img-fluid" style="box-shadow:0 0 8px #ccc; width:100%; height:auto;" />
+        </div>*@
+</div>
+

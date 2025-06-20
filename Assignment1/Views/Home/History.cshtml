@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "History";
+}
+
+<div class="bg-light">
+    <div class="mx-auto" style="max-width: 600px;">
+        <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            Ride History
+        </div>
+    </div>
+    <br />
+    <!--<div class="d-flex justify-content-center">
+        <div class="card" style="width:700px">
+            <div class="card-body">
+                <div class=" row" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+                    DD / MM / YYYY-->
+                    @*Date Booked: @DateTime.Now.ToString("dd/MM/yyyy")*@
+                <!--</div>
+
+                <br />
+                <div class="row">
+                    <div class="col">
+                        Booking ID: GUID <br />
+                        Driver Name: <br />
+                        Ambulance Type: <br />
+                        Pick-Up Address: Please type your address here... <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />-->
+
+    @* IF SOS BORDER RED*@
+
+    <!--<div class="d-flex justify-content-center">
+        <div class="card" style="width:700px ; border-color:red;">
+            <div class="card-body">
+                <div class="row" style="font-size:2rem; color:red; font-weight:600; font-family:sans-serif;">
+                    DD / MM / YYYY - S.O.S.
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        Booking ID: GUID <br />
+                        Driver Name: <br />
+                        Ambulance Type: <br />
+                        Pick-Up Address: Please type your address here... <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div id="historyContainer"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var historyContainer = document.getElementById('historyContainer');
+    var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    if (!bookings.length) {
+        historyContainer.innerHTML = '<div class="text-center" style="color:#888;">No bookings found.</div>';
+        return;
+    }
+
+    // Optionally, reverse to show most recent first
+    bookings.slice().reverse().forEach(function (booking) {
+        // Format date
+        var dateStr = booking.bookingDate
+            ? new Date(booking.bookingDate).toLocaleDateString()
+            : '';
+
+        // SOS example: if you have a flag like booking.sos === true
+        var isSOS = booking.sos === true;
+        var borderColor = isSOS ? 'red' : '#ddd';
+        var titleColor = isSOS ? 'red' : '#555';
+        var titleText = isSOS ? dateStr + ' - S.O.S.' : dateStr;
+
+        // Build card HTML
+        var card = `
+<div class="d-flex justify-content-center">
+    <div class="card booking-card" style="width:700px; border-color:${borderColor}; cursor:pointer;" 
+         onclick="viewConfirmedBooking('${booking.bookingId}')">
+        <div class="card-body">
+            <div class="row" style="font-size:2rem; color:${titleColor}; font-weight:600; font-family:sans-serif;">
+                ${titleText}
+            </div>
+            <br />
+            <div class="row">
+                <div class="col">
+                    Booking ID: ${booking.bookingId || ''} <br />
+                    Driver Name: ${booking.driver || ''} <br/>
+                    Ambulance Type: ${booking.vehicle || ''} <br />
+                    Pick-Up Address: ${booking.address || ''} <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+`;
+        historyContainer.innerHTML += card;
+    });
+});
+
+    function viewConfirmedBooking(bookingId) {
+        // Store the selected bookingId in localStorage
+        localStorage.setItem('selectedBookingId', bookingId);
+        // Redirect to the Confirmed view
+        window.location.href = '/Home/Confirmed';
+    }
+    </script>
+
+

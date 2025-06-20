@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Confirmed";
+}
+
+
+
+<div class="bg-light">
+    <div class="mx-auto" style="max-width: 600px;">
+        <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            Booking Confirmed
+        </div>
+    </div>
+    <input type="hidden" id="sosValue" value="@ViewBag.Sos" />
+    <br />
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width:700px">
+            <div class="card-body">
+                <div class=" text-center" style="font-size:1rem; color:#555; font-weight:600; font-family:sans-serif;">
+                    Booking Details
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        Booking ID: <span id="bookingId"></span> <br />
+                        Date Booked: <span id="bookingDate"></span> <br />
+                        Pick-Up Time: <span id="bookingTime"></span> <br />
+                        Pick-Up Address: <span id="bookingAddress"></span> <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width:700px">
+            <div class="card-body">
+                <div class=" text-center" style="font-size:1rem; color:#555; font-weight:600; font-family:sans-serif;">
+                    Driver Details
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col" id="driverImageCol">
+                        IMAGE OF DRIVER
+                    </div>
+                    <div class="col">
+                        Driver Name: <span id="driverName"></span> <br />
+                        Phone Number: <span id="driverPhone"></span> <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width:700px">
+            <div class="card-body">
+                <div class=" text-center" style="font-size:1rem; color:#555; font-weight:600; font-family:sans-serif;">
+                    Ambulance Details
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col" id="ambulanceImageCol">
+                        IMAGE OF AMBULANCE
+                    </div>
+                    <div class="col">
+                        Ambulance Type: <span id="ambulanceType"></span> <br />
+                        Registration Number: <span id="ambulanceReg"></span> <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        var selectedBookingId = localStorage.getItem('selectedBookingId');
+        var booking = bookings.find(function (b) { return b.bookingId === selectedBookingId; });
+
+        //if (selectedBookingId) {
+        //    booking = bookings.find(function (b) { return b.bookingId === selectedBookingId; });
+        //}
+        // Fallback to latest if not found
+        if (!booking && bookings.length) {
+            booking = bookings[bookings.length - 1];
+        }
+        if (!booking) return;
+
+        // Set booking details
+        document.getElementById('bookingId').innerText = booking.bookingId || '';
+        document.getElementById('bookingDate').innerText = booking.bookingDate
+            ? new Date(booking.bookingDate).toLocaleString()
+            : '';
+        document.getElementById('bookingTime').innerText = booking.time || '';
+        document.getElementById('bookingAddress').innerText = booking.address || '';
+
+        // Get drivers from localStorage
+        var drivers = JSON.parse(localStorage.getItem('drivers') || '[]');
+
+        // Find the driver by full name and service
+        var driver = drivers.find(function (d) {
+            var driverFullName = d.FirstName + " " + d.LastName ;
+            //var driverService = d.Service ;
+            //return driverFullName.trim() === (booking.driver || '').trim() &&
+            //    driverService === (booking.service || '');
+            return (driverFullName) === booking.driver;
+        });
+
+        // Set driver name and phone number
+        document.getElementById('driverName').innerText = booking.driver || '';
+        document.getElementById('driverPhone').innerText = driver ? (driver.PhoneNumber || driver.phoneNumber || '') : '';
+
+        // Set driver image with fallback
+        var driverImg = driver && (driver.Image || driver.image)
+            ? (driver.Image || driver.image)
+            : 'https://via.placeholder.com/80';
+        if (driverImg === 'Male.png' || driverImg === 'Female.png')
+            driverImg = '/Images/' + driverImg;
+        document.getElementById('driverImageCol').innerHTML =
+            `<img src="${driverImg}" alt="Driver" style="width:80px;height:80px;border-radius:50%;" onerror="this.onerror=null;this.src='https://via.placeholder.com/80';">`;
+
+        if (booking.driver && booking.driver.trim() !== '') {
+            // booking.driver has a value
+            console.log('Driver value:', booking.driver);
+            // You can safely use booking.driver here
+        } else {
+            // booking.driver is missing or empty
+            console.log('No driver assigned to this booking.');
+            // Handle the missing driver case here
+      
+        }
+
+        // Set ambulance details
+        document.getElementById('ambulanceType').innerText = booking.vehicle || '';
+        var vehicles = JSON.parse(localStorage.getItem('vehicles') || '[]');
+        var vehicle = vehicles.find(function (v) {
+            return (v.Type) === booking.vehicle;//|| v.type
+        });
+        document.getElementById('ambulanceReg').innerText = vehicle ? (vehicle.Registration || vehicle.registration || '') : '';
+        var vehicleImg = vehicle && (vehicle.Image || vehicle.image)
+            ? (vehicle.Image || vehicle.image)
+            : 'https://via.placeholder.com/80';
+        if (vehicleImg === 'Ambulance1.jpeg' || vehicleImg === 'Ambulance2.jpg')
+            vehicleImg = '/Images/' + vehicleImg;
+        document.getElementById('ambulanceImageCol').innerHTML =
+            `<img src="${vehicleImg}" alt="Ambulance" style="width:80px;height:80px;border-radius:8px;" onerror="this.onerror=null;this.src='https://via.placeholder.com/80';">`;
+
+    });
+</script>
+
