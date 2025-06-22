@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (updatePhone) {
             // Update existing driver
             var driver = drivers.find(function (d) {
-                return (d.PhoneNumber || d.phoneNumber) === updatePhone;
+                return (d.PhoneNumber) === updatePhone;
             });
             if (driver) {
                 driver.Gender = gender;
