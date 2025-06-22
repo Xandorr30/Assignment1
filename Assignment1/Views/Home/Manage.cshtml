@@ -73,9 +73,11 @@
     </div>
 </div>
 
-<div class="bg-light">
+<div  style="background-color:lightgrey">
     <div class="mx-auto" style="max-width: 600px;">
         <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            <img src="~/Images/Gear.png" alt="Ambulance" style="width:100px; height:100px" />
+            <br />
             Driver and Vehicle Management
         </div>
     </div>
@@ -88,7 +90,7 @@
                         Drivers
                     </div>
                     <div class="col" style="text-align:right;">
-                        <input type="button" name="createDriver" value="Create" data-bs-toggle="modal" data-bs-target="#addDriverModal" />
+                        <input type="button" name="createDriver" class="btn btn-primary" style="border-radius: 50px; padding: 12px 28px; background-color: #008CBA; " value="Create" data-bs-toggle="modal" data-bs-target="#addDriverModal" />
                     </div>
                 </div>
                 <input type="text" id="searchName" name="driver" placeholder="Driver Name" />
@@ -101,7 +103,7 @@
                     <option value="Event Medical Ambulance">Event Medical Ambulance</option>
                     <option value="Air Ambulance">Air Ambulance</option>
                 </select>
-                <input type="button" id="searchBtn" name="search" value="Search" />
+                <input type="button" id="searchBtn" name="search" class="btn btn-secondary" style="border-radius: 50px; padding: 12px 28px; background-color: #04AA6D; " value="Search" />
 
                 <table class="table" id="myTable">
                     <tr>
@@ -142,7 +144,7 @@
                         Vehicles
                     </div>
                     <div class="col" style="text-align:right;">
-                        <input type="button" name="createVehicle" value="Create" data-bs-toggle="modal" data-bs-target="#addVehicleModal"  />
+                        <input type="button" name="createVehicle" class="btn btn-primary" style="border-radius: 50px; padding: 12px 28px; background-color: #008CBA; "  value="Create" data-bs-toggle="modal" data-bs-target="#addVehicleModal"  />
                     </div>
                 </div>
                 <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
@@ -203,10 +205,11 @@
                     </tr>
                 </table>
                 <div style="text-align:right;">
-                    <input type="button" id="exportVehicleBtn"name="export" value="Export" />
+                    <input type="button" id="exportVehicleBtn"name="export" class="btn btn-secondary" style="border-radius: 50px; padding: 12px 28px; background-color: #04AA6D; " value="Export" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+<br/>
 

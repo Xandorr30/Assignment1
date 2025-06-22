@@ -6,18 +6,17 @@
     var vehicles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Vehicles ?? new List<Assignment1.Models.Vehicle>()));
     var drivers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Drivers ?? new List<Assignment1.Models.Driver>()));
 </script>
-<div class="bg-light">
+<div style="background-color:lightgrey">
     <div class="mx-auto" style="max-width: 600px;">
         <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
-            
+            <img src="~/Images/AmbulanceLogo.png" alt="Ambulance" style="width:100px; height:100px"/>
+            <br/>
             @ViewBag.ServiceName
-            @*if service is clicked then corrosponding name should be displayed*@
         </div>
     </div>
     <br />
     <form id="booking">
         <input type="hidden" id="serviceName" value="@ViewBag.ServiceName" />
-        @*<input type="hidden" id="sosValue" value="@ViewBag.Sos" />*@
 
         <div class="d-flex justify-content-center">
             <div class="card" style="width:700px">
@@ -25,11 +24,11 @@
                     <div class="row">
                         <div class="col">
                             <label for="name" class="form-label"><b>Full Name*</b></label>
-                            <input type="text" class="form-control" id="clientname" name="name" placeholder="John Carter" required />
+                            <input type="text" class="form-control" id="clientname" name="name" placeholder="John Carter" pattern="^[A-Za-z\s]+$" required />
                         </div>
                         <div class="col">
                             <label for="phone" class="form-label"><b>Phone*</b></label>
-                            <input type="text" class="form-control" id="clientphone" name="phone" placeholder="+27 00 000 0000" required />
+                            <input type="text" class="form-control" id="clientphone" name="phone" placeholder="+27 00 000 0000" attern="^\+?\d[\d\s]*$" required />
                         </div>
                     </div>
                     <br />
@@ -63,7 +62,6 @@
                                     }
                                 }
                             </select>
-                            @*<input type="text" class="form-control" id="vehicle" name="vehicle" placeholder="Type 1" required />*@
                         </div>
                         <div class="col">
                             <label for="driver" class="form-label"><b>Driver*</b></label>
@@ -77,7 +75,6 @@
                                     }
                                 }
                             </select>
-                            @*<input type="text" class="form-control" id="driver" name="driver" placeholder="John Carter" required />*@
                         </div>
                     </div>
                     <br />
@@ -91,11 +88,12 @@
                     </div>
                     <br />
                     <div class="row">
-                        <input type="submit" name="book" value="BOOK AMBULANCE" />
+                        <input type="submit" name="book" class="text-decoration-none text-white" style="border-radius: 50px; background-color: #555555; padding: 14px 40px;" value="BOOK AMBULANCE" />
                     </div>
                 </div>
             </div>
         </div>
+        <br/>
     </form>
 
     <script>
@@ -116,7 +114,7 @@
                 e.preventDefault();
 
 
-                // Get the service name from the hidden field
+                
                 var serviceName = document.getElementById('serviceName').value;
 
                 // Collect values
@@ -147,115 +145,7 @@
             });
         });
 
-        //function getRandomFromArray(arr) {
-        //    return arr[Math.floor(Math.random() * arr.length)];
-        //}
-
-        //function fillRandomBookingValues() {
-        //    // Random driver
-        //    var driver = getRandomFromArray(drivers.filter(function (d) {
-        //        return (d.Service || d.service) === document.getElementById('serviceName').value;
-        //    }));
-        //    if (driver) {
-        //        document.getElementById('driverDropdown').value = driver.FirstName + ' ' + driver.LastName;
-        //        document.getElementById('clientname').value = driver.FirstName + ' ' + driver.LastName;
-        //        document.getElementById('clientphone').value = driver.PhoneNumber || driver.phoneNumber || '';
-        //    }
-
-        //    // Random vehicle
-        //    var vehicle = getRandomFromArray(vehicles.filter(function (v) {
-        //        return (v.Service || v.service) === document.getElementById('serviceName').value;
-        //    }));
-        //    if (vehicle) {
-        //        document.getElementById('vehicleDropdown').value = vehicle.Type || vehicle.type || '';
-        //    }
-
-        //    // Random time
-        //    var hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
-        //    var min = String(Math.floor(Math.random() * 60)).padStart(2, '0');
-        //    document.getElementById('time').value = hour + ":" + min;
-
-        //    // Random reason
-        //    var reasons = ["Accident", "Transport", "Medical Emergency", "Routine Checkup", "Other"];
-        //    document.getElementById('reason').value = getRandomFromArray(reasons);
-
-        //    // Random address
-        //    var addresses = [
-        //        "123 Main St, City",
-        //        "456 Oak Ave, Suburb",
-        //        "789 Pine Rd, Town",
-        //        "101 Maple Dr, Village"
-        //    ];
-        //    document.getElementById('address').value = getRandomFromArray(addresses);
-        //}
-
-        //generate random values
-        //function getRandomName() {
-        //    const names = ["John Carter", "Jane Smith", "Alex Lee", "Sam Patel", "Chris Brown"];
-        //    return names[Math.floor(Math.random() * names.length)];
-        //}
-        //function getRandomPhone() {
-        //    return "+27 " + Math.floor(100000000 + Math.random() * 900000000);
-        //}
-        //function getRandomTime() {
-        //    const hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
-        //    const min = String(Math.floor(Math.random() * 60)).padStart(2, '0');
-        //    return hour + ":" + min;
-        //}
-        //function getRandomReason() {
-        //    const reasons = ["Accident", "Transport", "Medical Emergency", "Routine Checkup", "Other"];
-        //    return reasons[Math.floor(Math.random() * reasons.length)];
-        //}
-        //function getRandomOption(selectId) {
-        //    var select = document.getElementById(selectId);
-        //    if (!select) return "";
-        //    var options = Array.from(select.options).filter(o => o.value);
-        //    if (options.length === 0) return "";
-        //    return options[Math.floor(Math.random() * options.length)].value;
-        //}
-        //function getRandomAddress() {
-        //    const addresses = [
-        //        "123 Main St, City",
-        //        "456 Oak Ave, Suburb",
-        //        "789 Pine Rd, Town",
-        //        "101 Maple Dr, Village"
-        //    ];
-        //    return addresses[Math.floor(Math.random() * addresses.length)];
-        //}
-
-        //function fillRandomBookingValues() {
-        //    document.getElementById('clientname').value = getRandomName();
-        //    document.getElementById('clientphone').value = getRandomPhone();
-        //    document.getElementById('time').value = getRandomTime();
-        //    document.getElementById('reason').value = getRandomReason();
-        //    document.getElementById('vehicleDropdown').value = getRandomOption('vehicleDropdown');
-        //    document.getElementById('driverDropdown').value = getRandomOption('driverDropdown');
-        //    document.getElementById('address').value = getRandomAddress();
-        //}
-
     </script>
 
-
-    @*<div class="row">
-        <div class="col-sm-6">
-            <form method="post" action="@Url.Action("Book", "Home")">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required />
-                </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" required />
-                </div>
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" name="address" required />
-                </div>
-                <button type="submit" class="btn btn-primary">Book Now</button>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            <img src="@Url.Content("~/Images/Booking.png")" alt="Booking Image" class="img-fluid" style="box-shadow:0 0 8px #ccc; width:100%; height:auto;" />
-        </div>*@
 </div>
 

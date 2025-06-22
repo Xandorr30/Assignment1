@@ -62,14 +62,5 @@ namespace Assignment1.Controllers
             ViewBag.Vehicles = JsonConvert.SerializeObject(vehicles);
             return View(drivers);
         }
-
-
-
-        //[HttpPost]
-        //public JsonResult AddDriver(Driver driver)
-        //{
-        //    DriverRepository.Drivers.Add(driver);
-        //    return Json(new { success = true });
-        //}
     }
 }

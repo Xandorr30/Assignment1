@@ -19,7 +19,7 @@
             </div>
             <br />
             <div class="text-center">
-                <a href="@Url.Action("Service", "Home")" class="btn btn-primary">BOOK AMBULANCE</a>
+                <a href="@Url.Action("Service", "Home")" class="text-decoration-none text-white" style="border-radius: 50px; background-color: #555555; padding: 14px 40px; ">BOOK AMBULANCE</a>
             </div>
         </div>
     </div>
@@ -29,8 +29,8 @@
     </div>
 
 </div>
-<div class="row bg-light">
-    <div class="col-sm-8 d-flex align-items-center">
+<div class="row">
+    <div class="col-sm-8 d-flex align-items-center" style="background-color:lightgrey">
         <div class="mx-auto" style="max-width: 600px;">
             <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
                 EMERGENCY?
@@ -41,13 +41,9 @@
             <div class="text-center" style="font-size:1rem; color:#888; font-family:sans-serif;">
                 Stepping on a thumbtack at 3 am while doing arts and crafts is not an emergency
             </div>
-            @*<div class="d-flex align-items-center">
-                    <span style="font-size:1rem; color:#888; font-family:sans-serif;">Only hit the button for real emergencies mind you...</span>
-                    <span style="font-size:1rem; color:#888; font-family:sans-serif;">Stepping on a thumbtack at 3 am while doing arts and crafts is not an emergency</span>
-                </div>*@
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 bg-white" >
         <a href="javascript:void(0);" id="sosLink">
             <img id="sosImage" src="~/Images/SOS.png" alt="SOS" class="img-fluid" style="box-shadow:0 0 8px #ccc; width:100%; height:auto;" />
         </a>
@@ -65,8 +61,8 @@
         return arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
     }
     function generateRandomBooking() {
-        var vehicles = JSON.parse(localStorage.getItem('vehicles') || '[]');
-        var drivers = JSON.parse(localStorage.getItem('drivers') || '[]');
+        var vehicles = JSON.parse(localStorage.getItem('vehicles'));
+        var drivers = JSON.parse(localStorage.getItem('drivers'));
         var reasons = ["Medical Emergency"];
         var addresses = [""];
         var vehicle = getRandomFromArray(vehicles);
@@ -75,9 +71,9 @@
 
         return {
             bookingId: generateUUID(),
-            service: vehicle ? (vehicle.Service || vehicle.service || '') : 'Emergency',
+            service: vehicle ? (vehicle.Service) : 'Emergency',
             name: "",
-            phone: driver ? (driver.PhoneNumber || driver.phoneNumber || '') : '+27 000000000',
+            phone: driver ? (driver.PhoneNumber) : '+27 000000000',
             time: (function () {
                 var now = new Date();
                 var hour = String(now.getHours()).padStart(2, '0');
@@ -85,7 +81,7 @@
                 return hour + ":" + min;
             })(),
             reason: getRandomFromArray(reasons),
-            vehicle: vehicle ? (vehicle.Type || vehicle.type || '') : 'Unknown',
+            vehicle: vehicle ? (vehicle.Type) : 'Unknown',
             driver: driverName,
             address: getRandomFromArray(addresses),
             bookingDate: new Date().toISOString(),

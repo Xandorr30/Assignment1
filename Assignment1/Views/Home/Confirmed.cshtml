@@ -5,9 +5,11 @@
 
 
 
-<div class="bg-light">
+<div  style="background-color:lightgrey;">
     <div class="mx-auto" style="max-width: 600px;">
         <div class="text-center" style="font-size:2rem; color:#555; font-weight:600; font-family:sans-serif;">
+            <img src="~/Images/CheckMark.png" alt="Ambulance" style="width:100px; height:100px" />
+            <br />
             Booking Confirmed
         </div>
     </div>
@@ -75,19 +77,16 @@
             </div>
         </div>
     </div>
-
+    <br/>
 
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        var bookings = JSON.parse(localStorage.getItem('bookings'));
         var selectedBookingId = localStorage.getItem('selectedBookingId');
         var booking = bookings.find(function (b) { return b.bookingId === selectedBookingId; });
 
-        //if (selectedBookingId) {
-        //    booking = bookings.find(function (b) { return b.bookingId === selectedBookingId; });
-        //}
         // Fallback to latest if not found
         if (!booking && bookings.length) {
             booking = bookings[bookings.length - 1];
@@ -103,53 +102,49 @@
         document.getElementById('bookingAddress').innerText = booking.address || '';
 
         // Get drivers from localStorage
-        var drivers = JSON.parse(localStorage.getItem('drivers') || '[]');
+        var drivers = JSON.parse(localStorage.getItem('drivers'));
 
-        // Find the driver by full name and service
+        // Find the driver by full name
         var driver = drivers.find(function (d) {
             var driverFullName = d.FirstName + " " + d.LastName ;
-            //var driverService = d.Service ;
-            //return driverFullName.trim() === (booking.driver || '').trim() &&
-            //    driverService === (booking.service || '');
             return (driverFullName) === booking.driver;
         });
 
         // Set driver name and phone number
-        document.getElementById('driverName').innerText = booking.driver || '';
-        document.getElementById('driverPhone').innerText = driver ? (driver.PhoneNumber || driver.phoneNumber || '') : '';
+        document.getElementById('driverName').innerText = booking.driver;
+        document.getElementById('driverPhone').innerText = driver ? (driver.PhoneNumber) : '';
 
         // Set driver image with fallback
-        var driverImg = driver && (driver.Image || driver.image)
-            ? (driver.Image || driver.image)
+        var driverImg = driver && (driver.Image)
+            ? (driver.Image)
             : 'https://via.placeholder.com/80';
-        if (driverImg === 'Male.png' || driverImg === 'Female.png')
+
             driverImg = '/Images/' + driverImg;
         document.getElementById('driverImageCol').innerHTML =
             `<img src="${driverImg}" alt="Driver" style="width:80px;height:80px;border-radius:50%;" onerror="this.onerror=null;this.src='https://via.placeholder.com/80';">`;
 
-        if (booking.driver && booking.driver.trim() !== '') {
-            // booking.driver has a value
-            console.log('Driver value:', booking.driver);
-            // You can safely use booking.driver here
+       if (booking.driver && booking.driver.trim() !== '') {
+           // booking.driver has a value
+            console.log('driver value:', booking.driver);
+            // you can safely use booking.driver here
         } else {
             // booking.driver is missing or empty
-            console.log('No driver assigned to this booking.');
-            // Handle the missing driver case here
+            console.log('no driver assigned to this booking.');
       
         }
 
         // Set ambulance details
-        document.getElementById('ambulanceType').innerText = booking.vehicle || '';
-        var vehicles = JSON.parse(localStorage.getItem('vehicles') || '[]');
+        document.getElementById('ambulanceType').innerText = booking.vehicle;
+        var vehicles = JSON.parse(localStorage.getItem('vehicles'));
         var vehicle = vehicles.find(function (v) {
-            return (v.Type) === booking.vehicle;//|| v.type
+            return (v.Type) === booking.vehicle;
         });
-        document.getElementById('ambulanceReg').innerText = vehicle ? (vehicle.Registration || vehicle.registration || '') : '';
-        var vehicleImg = vehicle && (vehicle.Image || vehicle.image)
-            ? (vehicle.Image || vehicle.image)
+        document.getElementById('ambulanceReg').innerText = vehicle ? (vehicle.Registration) : '';
+        var vehicleImg = vehicle && (vehicle.Image)
+            ? (vehicle.Image)
             : 'https://via.placeholder.com/80';
-        if (vehicleImg === 'Ambulance1.jpeg' || vehicleImg === 'Ambulance2.jpg')
-            vehicleImg = '/Images/' + vehicleImg;
+
+        vehicleImg = '/Images/' + vehicleImg;
         document.getElementById('ambulanceImageCol').innerHTML =
             `<img src="${vehicleImg}" alt="Ambulance" style="width:80px;height:80px;border-radius:8px;" onerror="this.onerror=null;this.src='https://via.placeholder.com/80';">`;
 
